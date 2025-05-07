@@ -15,23 +15,25 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-package models
+package qa
 
 import (
-	"github.com/apache/incubator-devlake/core/models/common"
+	"time"
+
+	"github.com/apache/incubator-devlake/core/models/domainlayer"
 )
 
-type TapdStoryCategory struct {
-	ConnectionId uint64          `gorm:"primaryKey"`
-	Id           int64           `gorm:"primaryKey;type:BIGINT NOT NULL;autoIncrement:false" json:"id,string"`
-	Name         string          `json:"name" gorm:"type:varchar(255)"`
-	Description  string          `json:"description"`
-	ParentId     int64           `json:"parent_id,string"`
-	Created      *common.CSTTime `json:"created"`
-	Modified     *common.CSTTime `json:"modified"`
-	common.NoPKModel
+// QaApi represents a QA API in the domain layer
+type QaApi struct {
+	domainlayer.DomainEntityExtended
+	Name        string    `gorm:"type:varchar(255);comment:API name"`
+	Path        string    `gorm:"type:varchar(255);comment:API path"`
+	Method      string    `gorm:"type:varchar(255);comment:API method"`
+	CreateTime  time.Time `gorm:"comment:API creation time"`
+	CreatorId   string    `gorm:"type:varchar(255);comment:Creator ID"`
+	QaProjectId string    `gorm:"type:varchar(255);index;comment:Project ID"`
 }
 
-func (TapdStoryCategory) TableName() string {
-	return "_tool_tapd_story_categories"
+func (QaApi) TableName() string {
+	return "qa_apis"
 }

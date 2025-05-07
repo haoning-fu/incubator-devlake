@@ -15,23 +15,18 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-package models
+package qa
 
 import (
-	"github.com/apache/incubator-devlake/core/models/common"
+	"github.com/apache/incubator-devlake/core/models/domainlayer"
 )
 
-type TapdStoryCategory struct {
-	ConnectionId uint64          `gorm:"primaryKey"`
-	Id           int64           `gorm:"primaryKey;type:BIGINT NOT NULL;autoIncrement:false" json:"id,string"`
-	Name         string          `json:"name" gorm:"type:varchar(255)"`
-	Description  string          `json:"description"`
-	ParentId     int64           `json:"parent_id,string"`
-	Created      *common.CSTTime `json:"created"`
-	Modified     *common.CSTTime `json:"modified"`
-	common.NoPKModel
+// QaProject represents a QA project in the domain layer
+type QaProject struct {
+	domainlayer.DomainEntityExtended
+	Name string `gorm:"type:varchar(255);comment:Project name"`
 }
 
-func (TapdStoryCategory) TableName() string {
-	return "_tool_tapd_story_categories"
+func (QaProject) TableName() string {
+	return "qa_projects"
 }
